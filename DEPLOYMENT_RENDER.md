@@ -138,14 +138,43 @@ NEXT_PUBLIC_BACKEND_URL=https://your-app-name.onrender.com
    - Check application logs for error details
    - Ensure database initialization is working
 
-3. **Performance Issues**
+3. **Application Exited Early**
+   - This usually means the app crashed during startup
+   - Check if all required environment variables are set
+   - Try the simplified deployment approach (see below)
+   - Run the minimal test locally: `python test_minimal.py`
+
+4. **Performance Issues**
    - Monitor resource usage in Render dashboard
    - Consider upgrading to a higher plan if needed
    - Optimize database queries and file operations
 
-4. **CORS Issues**
+5. **CORS Issues**
    - Update CORS settings in `main.py` to allow your frontend domain
    - Test with browser developer tools
+
+### If Deployment Still Fails
+
+Try the simplified approach:
+
+1. **Use the simplified render.yaml**:
+   ```bash
+   # Rename the simplified config
+   mv render-simple.yaml render.yaml
+   ```
+
+2. **Or manually configure in Render dashboard**:
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `cd src && gunicorn api.main:app --bind 0.0.0.0:$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker --timeout 120`
+
+3. **Test locally first**:
+   ```bash
+   cd sensai-ai
+   python test_minimal.py
+   cd src
+   python startup.py
+   uvicorn api.main:app --reload
+   ```
 
 ### Useful Commands
 

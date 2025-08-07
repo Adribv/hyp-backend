@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: sensai-backend
+    name: sensai-backend-simple
     env: python
     plan: starter
     buildCommand: pip install -r requirements.txt
-    startCommand: cd src && python startup.py && gunicorn api.main:app --bind 0.0.0.0:$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker
+    startCommand: cd src && gunicorn api.main:app --bind 0.0.0.0:$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker --timeout 120
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.1
