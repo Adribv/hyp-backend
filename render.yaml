@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: sensai-backend
+    env: python
+    plan: starter
+    buildCommand: chmod +x build.sh && ./build.sh
+    startCommand: cd src && python startup.py && gunicorn api.main:app -c ../gunicorn.conf.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.1
+      - key: PORT
+        value: 8000
+      - key: ENV
+        value: production
+      - key: RENDER
+        value: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: S3_BUCKET_NAME
+        sync: false
+      - key: S3_FOLDER_NAME
+        sync: false
+      - key: BUGSNAG_API_KEY
+        sync: false
+      - key: SLACK_USER_SIGNUP_WEBHOOK_URL
+        sync: false
+      - key: SLACK_COURSE_CREATED_WEBHOOK_URL
+        sync: false
+      - key: SLACK_USAGE_STATS_WEBHOOK_URL
+        sync: false
+      - key: PHOENIX_ENDPOINT
+        sync: false
+      - key: PHOENIX_API_KEY
+        sync: false

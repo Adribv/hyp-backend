@@ -2,11 +2,19 @@ import os
 from os.path import exists
 from api.models import LeaderboardViewType, TaskInputType, TaskAIResponseType, TaskType
 
-if exists("/appdata"):
+# Check if running on Render
+if os.getenv('RENDER'):
+    # On Render, use local paths
+    data_root_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "db")
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logs")
+elif exists("/appdata"):
+    # Docker environment
     data_root_dir = "/appdata"
     root_dir = "/demo"
     log_dir = "/appdata/logs"
 else:
+    # Local development
     root_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(root_dir)
 
