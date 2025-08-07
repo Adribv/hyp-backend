@@ -40,14 +40,13 @@ git push origin main
 
 **Basic Settings:**
 - **Name**: `sensai-backend`
-- **Environment**: `Python`
+- **Environment**: `Docker`
 - **Region**: Choose closest to your users
 - **Branch**: `main` (or your default branch)
 - **Root Directory**: `sensai-ai` (since your backend is in this subdirectory)
+- **Dockerfile Path**: `./Dockerfile`
 
-**Build & Deploy Settings:**
-- **Build Command**: `chmod +x build.sh && ./build.sh`
-- **Start Command**: `cd src && python startup.py && gunicorn api.main:app -c ../gunicorn.conf.py`
+**Note**: Render will automatically use the Dockerfile for building and running your application.
 
 ### 2.3 Set Environment Variables
 
@@ -155,19 +154,27 @@ NEXT_PUBLIC_BACKEND_URL=https://your-app-name.onrender.com
 
 ### If Deployment Still Fails
 
-Try the simplified approach:
+Try these approaches:
 
-1. **Use the simplified render.yaml**:
+1. **Use the simplified Dockerfile**:
    ```bash
-   # Rename the simplified config
-   mv render-simple.yaml render.yaml
+   # Rename the simplified Dockerfile
+   mv Dockerfile.simple Dockerfile
    ```
 
-2. **Or manually configure in Render dashboard**:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `cd src && gunicorn api.main:app --bind 0.0.0.0:$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker --timeout 120`
+2. **Test Docker build locally**:
+   ```bash
+   cd sensai-ai
+   docker build -t sensai-backend .
+   docker run -p 8000:8000 -e OPENAI_API_KEY=test -e GOOGLE_CLIENT_ID=test sensai-backend
+   ```
 
-3. **Test locally first**:
+3. **Check Docker logs**:
+   - In Render dashboard, go to "Logs" tab
+   - Look for Docker build errors or runtime errors
+   - Common issues: missing dependencies, permission errors, port conflicts
+
+4. **Test locally first**:
    ```bash
    cd sensai-ai
    python test_minimal.py

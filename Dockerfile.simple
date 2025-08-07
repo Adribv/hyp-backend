@@ -1,4 +1,4 @@
-FROM python:3.13.1-slim-bookworm
+FROM python:3.13.1-slim
 
 # Set working directory
 WORKDIR /app
@@ -8,24 +8,7 @@ RUN apt-get update && apt-get install -y \
     gcc \
     python3-dev \
     curl \
-    wget \
-    fontconfig \
-    libfreetype6 \
-    libjpeg62-turbo \
-    libpng16-16 \
-    libx11-6 \
-    libxcb1 \
-    libxext6 \
-    libxrender1 \
-    xfonts-75dpi \
-    xfonts-base \
-    ffmpeg \
-    poppler-utils \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Node.js and npm
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-RUN apt-get install -y nodejs git
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
@@ -43,10 +26,6 @@ ENV PORT=8000
 
 # Expose port
 EXPOSE 8000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
 
 # Start command
 CMD cd src && python startup.py && gunicorn api.main:app --bind 0.0.0.0:$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker --timeout 120
