@@ -100,7 +100,7 @@ else:
     # Split comma-separated origins
     allowed_origins = [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
 
-# Add localhost for development
+# Add localhost for development and production frontend URLs
 if os.getenv("ENV") != "production":
     allowed_origins.extend([
         "http://localhost:3000",
@@ -108,6 +108,11 @@ if os.getenv("ENV") != "production":
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001"
     ])
+
+# Add production frontend URL
+allowed_origins.extend([
+    "https://hyp-frontend.onrender.com"
+])
 
 app.add_middleware(
     CORSMiddleware,

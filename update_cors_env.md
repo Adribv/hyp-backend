@@ -10,7 +10,7 @@ You need to update the environment variables in your Render dashboard:
 3. Add/Update this environment variable:
 
 ```
-ALLOWED_ORIGINS=http://localhost:3000,https://your-frontend-domain.com
+ALLOWED_ORIGINS=http://localhost:3000,https://hyp-frontend.onrender.com
 ```
 
 ### For Development (temporary):
@@ -20,7 +20,7 @@ ALLOWED_ORIGINS=*
 
 ### For Production (recommended):
 ```
-ALLOWED_ORIGINS=http://localhost:3000,https://your-frontend-domain.com,https://www.your-frontend-domain.com
+ALLOWED_ORIGINS=http://localhost:3000,https://hyp-frontend.onrender.com
 ```
 
 ## Alternative: Quick Fix
