@@ -92,10 +92,22 @@ if settings.bugsnag_api_key:
 
 # Add CORS middleware to allow cross-origin requests (for frontend to access backend)
 # Get allowed origins from environment or use default
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
-if allowed_origins == ["*"] and os.getenv("ENV") == "production":
-    # In production, require specific origins to be set
-    allowed_origins = []
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "*")
+if allowed_origins_str == "*":
+    # Allow all origins in development, or if explicitly set to *
+    allowed_origins = ["*"]
+else:
+    # Split comma-separated origins
+    allowed_origins = [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
+
+# Add localhost for development
+if os.getenv("ENV") != "production":
+    allowed_origins.extend([
+        "http://localhost:3000",
+        "http://localhost:3001", 
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001"
+    ])
 
 app.add_middleware(
     CORSMiddleware,
